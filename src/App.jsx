@@ -34,10 +34,33 @@ const filterProductsByUser = (prod, userId) => {
   return prod;
 };
 
+// const filterProductByCategories = (prod, categoryId) => {
+//   if (!categoryId.length) {
+//     return prod;
+//   }
+
+//   return prod.filter(item => categoryId.includes(item.category.id));
+// };
+
 export const App = () => {
   const [productsList, setProductsList] = useState(products);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [query, setQuery] = useState('');
+  // const [selectedCategoryId, setSelectedCategoryId] = useState([]);
+
+  // const updateProductList = (userId, categoryId, searchQuery) => {
+  //   let filtered = filterProductsByUser(products, userId);
+
+  //   filtered = filterProductByCategories(filtered, categoryId);
+
+  //   if (searchQuery) {
+  //     filtered = filtered.filter(p =>
+  //       p.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  //     );
+  //   }
+
+  //   setProductsList(filtered);
+  // };
 
   return (
     <div className="section">
@@ -135,6 +158,18 @@ export const App = () => {
                 All
               </a>
 
+              {/* {categoriesFromServer.map(category) => (
+              <a
+                key={category.id}
+                data-cy="Category"
+                className={`button mr-2 my-1 is-info ${selectedCategoryIds.includes(category.id) ? 'is-info' : ''}`}
+                href="#/"
+                onClick={
+                const new}
+              >
+                Category 1
+              </a>
+              )} */}
               <a
                 data-cy="Category"
                 className="button mr-2 my-1 is-info"
