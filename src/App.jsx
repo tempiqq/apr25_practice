@@ -22,10 +22,21 @@ const products = productsFromServer.map(product => {
   return { ...product, category, user };
 });
 
-// console.log(products);
+const filterProductsByUser = (prod, userId) => {
+  if (userId === null) {
+    return prod;
+  }
+
+  if (typeof userId === 'number') {
+    return prod.filter(item => item.user?.id === userId);
+  }
+
+  return prod;
+};
 
 export const App = () => {
-  const [productsList] = useState(products);
+  const [productsList, setProductsList] = useState(products);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   return (
     <div className="section">
@@ -37,21 +48,31 @@ export const App = () => {
             <p className="panel-heading">Filters</p>
 
             <p className="panel-tabs has-text-weight-bold">
-              <a data-cy="FilterAllUsers" href="#/">
+              <a
+                data-cy="FilterAllUsers"
+                href="#/"
+                className={selectedUserId === null ? 'is-active' : ''}
+                onClick={() => {
+                  setSelectedUserId(null);
+                  setProductsList(filterProductsByUser(products, null));
+                }}
+              >
                 All
               </a>
-
-              <a data-cy="FilterUser" href="#/">
-                User 1
-              </a>
-
-              <a data-cy="FilterUser" href="#/" className="is-active">
-                User 2
-              </a>
-
-              <a data-cy="FilterUser" href="#/">
-                User 3
-              </a>
+              {usersFromServer.map(user => (
+                <a
+                  key={user.id}
+                  data-cy="FilterUser"
+                  href="#/"
+                  className={selectedUserId === user.id ? 'is-active' : ''}
+                  onClick={() => {
+                    setSelectedUserId(user.id);
+                    setProductsList(filterProductsByUser(products, user.id));
+                  }}
+                >
+                  {user.name}
+                </a>
+              ))}
             </p>
 
             <div className="panel-block">
