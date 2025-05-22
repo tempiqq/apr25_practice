@@ -37,6 +37,7 @@ const filterProductsByUser = (prod, userId) => {
 export const App = () => {
   const [productsList, setProductsList] = useState(products);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [query, setQuery] = useState('');
 
   return (
     <div className="section">
@@ -82,21 +83,45 @@ export const App = () => {
                   type="text"
                   className="input"
                   placeholder="Search"
-                  value="qwe"
+                  value={query}
+                  onChange={q => {
+                    const newQ = q.target.value;
+                    setQuery(newQ);
+
+                    const filtered = filterProductsByUser(
+                      products,
+                      selectedUserId,
+                    ).filter(p => {
+                      return p.name.toLowerCase().includes(newQ.toLowerCase());
+                    });
+
+                    setProductsList(filtered);
+                  }}
                 />
 
                 <span className="icon is-left">
                   <i className="fas fa-search" aria-hidden="true" />
                 </span>
 
-                <span className="icon is-right">
-                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                  <button
-                    data-cy="ClearButton"
-                    type="button"
-                    className="delete"
-                  />
-                </span>
+                {query && (
+                  <span className="icon is-right">
+                    {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+                    <button
+                      data-cy="ClearButton"
+                      type="button"
+                      className="delete"
+                      onClick={() => {
+                        setQuery('');
+                        const filtered = filterProductsByUser(
+                          products,
+                          selectedUserId,
+                        );
+
+                        setProductsList(filtered);
+                      }}
+                    />
+                  </span>
+                )}
               </p>
             </div>
 
